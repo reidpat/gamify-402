@@ -1,4 +1,6 @@
 
+// Thank you to Net Ninja, whos tutorial helped generate much of this file
+
 //First we grab all of the html elements that we are going to need in order to react to the users clicks
 const authSwitchLinks = document.querySelectorAll('.switch');
 const authModals = document.querySelectorAll('.auth .modal');
