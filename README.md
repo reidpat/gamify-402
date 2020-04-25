@@ -11,6 +11,8 @@ public/
     auth.js -> Handles user log in/out  
     processing.js -> where the users values are being rendered (xp, level, streaks, ect...)  
     rescueTimeDisplay.js -> Rendering the graph for all the RescueTime data 
+  css/ 
+    styles.css -> all of the things that make the final product look pretty
     
 functions/  
   index.js -> All of the firebase cloud functions. Handles all the server-side code
