@@ -2,7 +2,7 @@
  
  Hello, and welcome to my code!
  
- If you are wanting to see the code that I wrote these are the areas you will want to look at the following areas:
+ If you are wanting to see the code that I wrote these are the areas you will want to look at:
  
 public/  
   index.html -> this is where the main html is and where all the content is ultimately being rendered  
