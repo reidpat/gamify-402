@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gamify 402</title>
+
+  <!-- Importing the p5.js library for use -->
+  <script type='module' src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+
+  <title>Healthier Cyborgs: Gamified</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 
@@ -13,9 +17,11 @@
 
 <body>
 
+ 
   <div class="notification"></div>
 
-  <!-- auth modals -->
+  <!-- This section deals with the log in page -->
+  <!-- authentication modals -->
   <div class="auth">
     <div class="modal">
       <h2>Login</h2>
@@ -25,7 +31,8 @@
         <button>Login</button>
         <p class="error"></p>
       </form>
-      <div>No account? <a class="switch">Register instead</a></div>
+      <!-- For now, making new accounts has been disabled. There are still some kinks to be worked out with automatically adding new users -->
+      <!-- <div>No account? <a class="switch">Register instead</a></div> -->
     </div>
     <div class="modal">
       <h2>Register</h2>
@@ -53,21 +60,59 @@
   </div>
 
 
-  <header>
-    <nav>
-      <a class="sign-out">sign out</a>
-    </nav>
-  </header>
+  <!-- The sidebar. Includes the main user graphic. -->
+  <div class="sidenav show">
+    <h1>Healthier Cyborgs: Gamified</h1>
+    <!-- Creating the space where the main user graphic is rendered -->
+    <div id='container'>
+      <!-- The processing js library was used to generate the main user graphic and is being rendered from this file -->
+      <script src='js/processing.js'></script>
+   </div>
 
-  <section class="content">
-    <div class='characterValues'>
-      <h1>Character Values</h1>
-      <p id="xp">XP: </p>
-      <p id="mp">MP: </p>
-      <p id="gp">GP: </p>
-    </div>
+
+    <a class="sign-out">sign out</a>
+  </div>
+
+  
+
+
+ 
+
+
+<!-- The main content of the webpage -->
+
+  <!-- First section: Most Important Tasks -->
+  <section class="content" id="todo">
+    <h1>Most Important Tasks</h1>
+    <!-- This section is being rendered with a Vue.js component, which can be found at the bottom of app.js -->
+    <ul class="mit">
+      <!-- Looking through the list of tasks in the vue component and rendering them all -->
+      <!-- Checking to see when the user's mouse is hovering over each element -->
+      <li class="parent" v-for="(task, index) in tasks" v-bind:key="task.id" @mouseover="setHoverTrue(task)" @mouseOut="setHoverFalse(task)">
+        <span class="text" v-bind:class="{ 'task-complete': task.complete }">{{index + 1}}. {{task.name}}</span>
+        
+        <div>
+          <!-- Show the delete icon only if the user is hovering over that element in the list -->
+          <i v-show="task.hover"@click="handleDelete(task)" class='material-icons delete' style="color: red">delete_forever</i>
+
+          <!-- Changing which checkbox icon is shown depending on if the task has been completed or not.
+          Toggle completion of the task if this icon is clicked -->
+          <i v-if="task.complete" @click="toggleComplete(task)" class="material-icons checked">check_box</i>
+          <i v-else @click="toggleComplete(task)" class="material-icons unchecked">check_box_outline_blank</i>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Where the user adds new  -->
+    <!-- Only allow the user to add more tasks if there are currently less than 3 in the list -->
+    <form autocomplete="off" @submit.prevent="handleFormSubmit()" id="taskForm" v-if="tasks.length < 3">
+      <input type='text' id="taskName" v-model="newTaskName">
+      <input type='submit' value='Add Task'>
+    </form>
   </section>
 
+<!-- Second Section: Displaying the chart with data from rescuetime
+This is being rendered in rescueTimeDisplay.js  -->
   <section class="content" id="rescueTime">
     <h1>Rescue Time</h1>
     <canvas id="rt-chart"></canvas>
@@ -76,21 +121,9 @@
 
 
 
-  <!--
-  <section class="content" id ="app">
-    <h1>Tutorial Requests</h1>
-    <ul class="request-list">
-      <li v-for="request in requests">
-        <span class="text">{{ request.text }}</span>
-        <div>
-          <span class="votes">{{ request.upvotes }}</span>
-          <i class="material-icons upvote" v-on:click="upvoteRequest(request.id)">arrow_upward</i>
-        </div>
-      </li>
-    </ul>
 
-  </section>
-  --->
+
+  -
 
   <!-- vue js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>

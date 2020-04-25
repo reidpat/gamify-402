@@ -74,7 +74,7 @@ function displayRTGraph(rtData) {
         eff.push(section.eEff);
         time.push(section.time);
         score.push(section.score);
-        xp.push(section.xp);
+        xp.push(Math.round(section.xp * 100) / 100);
     });
 
     chart.data.datasets[0].data = score;
