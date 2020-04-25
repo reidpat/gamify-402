@@ -7,6 +7,7 @@ var chart = new Chart(ctx, {
     type: 'line',
 
 
+    //creating settings for each of the lines we want to draw
     data: {
         labels: [],
         datasets: [
@@ -47,9 +48,12 @@ var chart = new Chart(ctx, {
             xAxes: [{
                 type: 'time',
                 time: {
+                    //format for how the time should be displayed
                     parser: "HH:mm",
                     unit: 'hour',
+                    //show the last 12 hours on the time scale
                     min: moment().subtract(12, 'h'),
+                    //show one hour in the future (to give some space on right hand side)
                     max: moment().add(1, 'h'),
                     displayFormats: {
                         'minute': 'HH:mm',
@@ -64,6 +68,7 @@ var chart = new Chart(ctx, {
     }
 });
 
+//taking a list of data points as objects and separating them out into their separate lines
 function displayRTGraph(rtData) {
     let label = [];
     let eff = [];
