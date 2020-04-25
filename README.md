@@ -10,8 +10,8 @@ public/
     app.js -> The javascript controlling the main content and how it is updated. Also contains the vue component.  
     auth.js -> Handles user log in/out  
     processing.js -> where the users values are being rendered (xp, level, streaks, ect...)  
-    rescueTimeDisplay.js -> Rendering the graph for all the RescueTime data 
-  css/ 
+    rescueTimeDisplay.js -> Rendering the graph for all the RescueTime data  
+  css/   
     styles.css -> all of the things that make the final product look pretty
     
 functions/  
