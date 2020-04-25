@@ -174,20 +174,28 @@ let app = new Vue({
         addTask({ newTaskName: this.newTaskName });
       }
     },
+
+    //delete the selected task
     handleDelete: function (task) {
       removeTask = firebase.functions().httpsCallable('removeTask');
       removeTask(task);
     },
+
+    //these next two functions control the state for if the user is hovering their mouse over that specific task
     setHoverTrue: function (task) {
       task.hover = true;
     },
     setHoverFalse: function (task) {
       task.hover = false;
     },
+
+    //initial setup when the user logs in
     addUser: function (user) {
       this.userID = user.uid;
       this.updateTasks();
     },
+
+    //goes to firebase and grabs any new data
     updateTasks: function (snapshot) {
       let tasks = [];
       snapshot.forEach(doc => {
