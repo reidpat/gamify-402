@@ -2,7 +2,7 @@
 
 body {
     margin: 0;
-    background: #fafffe;
+    background: #023047;
 }
 
 body, h1, h2, p, a, input {
@@ -21,7 +21,7 @@ ul {
 .sidenav {
     height: 100%;
     /* Full-height: */
-    width: 200px;
+    width: 210px;
     /* Set the width of the sidebar */
     position: fixed;
     /* Fixed Sidebar (stay in place on scroll) */
@@ -30,8 +30,8 @@ ul {
     top: 0;
     /* Stay at the top */
     left: 0;
-    background-color: #6cd9c1;
-    border-right: solid 1px black;
+    background-color: #06a4c3;
+    border-bottom-right-radius: 10px;
     /* Black */
     overflow-x: hidden;
     /* Disable horizontal scroll */
@@ -106,7 +106,7 @@ header a:hover {
     padding: 20px;
     padding-top: 5px;
     margin-top: 20px;
-    margin-left: 230px;
+    margin-left: 250px;
     background-color: white;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -246,5 +246,6 @@ button {
 }
 #container {
     margin-bottom: 0px;
+    margin-left: 5px;
     height: 200px;
 }
