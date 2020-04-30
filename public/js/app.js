@@ -167,12 +167,22 @@ let app = new Vue({
       compTask(task);
     },
     //gets triggered when the user enters a new task
-    handleFormSubmit: async function () {
+    handleFormSubmit: async function (e) {
       //if we add a new task and we have less than 3 in our list, send that new one to our database
+
+      console.log(this.text);
+      
       if (this.tasks.length < 3) {
         addTask = firebase.functions().httpsCallable('addTask');
-        addTask({ newTaskName: this.newTaskName });
+        await addTask({ newTaskName: this.newTaskName });
+
+        this.newTaskName = '';
+
+        value = "";
       }
+    
+      
+
     },
 
     //delete the selected task

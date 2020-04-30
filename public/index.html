@@ -8,7 +8,7 @@
   <!-- Importing the p5.js library for use -->
   <script type='module' src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
 
-  <title>Healthier Cyborgs: Gamified</title>
+  <title>Evolving Cyborgs</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 
@@ -47,22 +47,11 @@
   </div>
 
 
-  <!-- new request modal -->
-  <div class="new-request">
-    <div class="modal">
-      <h2>Request a tutorial</h2>
-      <form>
-        <input type="text" name="request" placeholder="Request...">
-        <button>Submit Request</button>
-        <p class="error"></p>
-      </form>
-    </div>
-  </div>
 
 
   <!-- The sidebar. Includes the main user graphic. -->
   <div class="sidenav show">
-    <h1>Healthier Cyborgs: Gamified</h1>
+    <h1>Evolving Cyborgs</h1>
     <!-- Creating the space where the main user graphic is rendered -->
     <div id='container'>
       <!-- The processing js library was used to generate the main user graphic and is being rendered from this file -->
@@ -105,8 +94,8 @@
 
     <!-- Where the user adds new  -->
     <!-- Only allow the user to add more tasks if there are currently less than 3 in the list -->
-    <form autocomplete="off" @submit.prevent="handleFormSubmit()" id="taskForm" v-if="tasks.length < 3">
-      <input type='text' id="taskName" v-model="newTaskName">
+    <form autocomplete="off" @submit.prevent="handleFormSubmit" id="taskForm" v-if="tasks.length < 3">
+      <input type='text' id="taskName" v-model="newTaskName" placeholder="Task Name">
       <input type='submit' value='Add Task'>
     </form>
   </section>
