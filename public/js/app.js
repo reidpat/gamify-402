@@ -32,7 +32,7 @@ function getCharacterValues(snap) {
   }
   //if there was a level up, send it to the database
   if (data.xp >= data.nextLvlXp) {
-    
+
     //Yaaay alert the user they have advanced a level
     alert(`Congratulations! You are now level ${level}`)
     const updateUserData = firebase.functions().httpsCallable('updateUserData');
@@ -109,7 +109,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
   //if the user is logged in, grab all their data and display in in the elements on the screen
   //to make this function more efficient I really should be caching data locally in the browser. Seeing as I don't know how to do that and didn't have the time to learn, I did not do that.
- 
+
   //loaded ensures that we don't get caught in any infinite loops!
   if (user && !loaded) {
 
@@ -171,17 +171,21 @@ let app = new Vue({
       //if we add a new task and we have less than 3 in our list, send that new one to our database
 
       console.log(this.text);
-      
+
       if (this.tasks.length < 3) {
+        this.tasks.push({
+          complete: false,
+          name: this.newTaskName,
+        })
         addTask = firebase.functions().httpsCallable('addTask');
-        await addTask({ newTaskName: this.newTaskName });
+        addTask({ newTaskName: this.newTaskName });
 
         this.newTaskName = '';
 
         value = "";
       }
-    
-      
+
+
 
     },
 
