@@ -18,10 +18,11 @@ function setup() {
     clear();
     smooth();
     noLoop();
+
 }
 function renderHUD() {
 
-   
+
 
     background(255);
     clear();
