@@ -135,6 +135,10 @@ firebase.auth().onAuthStateChanged(async (user) => {
       getFirestoreRTData(snap)
     })
 
+    let listOfHabits = []
+    listOfHabits.push(new Habit("Wake Up"));
+    listOfHabits.push(new Habit("Journal", 3, [{ complete: false, date: new Date() }, { complete: false, date: new Date() }]));
+    vueHabits.habits = listOfHabits;
     //set loaded to true so we don't keep doing this over and over!
     loaded = true;
   }
