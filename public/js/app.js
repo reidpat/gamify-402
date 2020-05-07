@@ -114,9 +114,15 @@ firebase.auth().onAuthStateChanged(async (user) => {
   if (user && !loaded) {
 
     //.onsnapshot() will be called every time there is a change to our database. This allows us to keep the data displayed on the webpage in (nearly) real-time snyc with our database
-    const ref = firebase.firestore().collection('users').doc(user.uid).collection('tasks').onSnapshot(snap => {
+    const firebaseTodos = firebase.firestore().collection('users').doc(user.uid).collection('tasks').onSnapshot(snap => {
       //everytime there is a change in our task list, display the new data
-      app.updateTasks(snap);
+      vueTodo.updateTasks(snap);
+    });
+
+    const firebaseHabits = firebase.firestore().collection('users').doc(user.uid).collection('habits').onSnapshot(snap => {
+
+      vueHabits.updateHabits(snap);
+      vueHabits.resetHabits(snap);
     });
 
     const userDoc = firebase.firestore().collection('users').doc(user.uid).onSnapshot(snap => {
@@ -155,51 +161,3 @@ function getFirestoreRTData(snap) {
 
 
 //This section is the Vue instance which controls the todo section of our content. 
-let app = new Vue({
-  el: '#todo',
-  //start with an empty list of tasks
-  data: {
-    newTaskName: '',
-    userID: "",
-    tasks: [],
-  },
-  methods: {
-    //this will update our
-    toggleComplete: function (task) {
-      task.complete = !task.complete;
-      compTask = firebase.functions().httpsCallable('completeTask');
-      compTask(task);
-    },
-    //gets triggered when the user enters a new task
-    handleFormSubmit: async function () {
-      //if we add a new task and we have less than 3 in our list, send that new one to our database
-      if (this.tasks.length < 3) {
-        addTask = firebase.functions().httpsCallable('addTask');
-        addTask({ newTaskName: this.newTaskName });
-      }
-    },
-    handleDelete: function (task) {
-      removeTask = firebase.functions().httpsCallable('removeTask');
-      removeTask(task);
-    },
-    setHoverTrue: function (task) {
-      task.hover = true;
-    },
-    setHoverFalse: function (task) {
-      task.hover = false;
-    },
-    addUser: function (user) {
-      this.userID = user.uid;
-      this.updateTasks();
-    },
-    updateTasks: function (snapshot) {
-      let tasks = [];
-      snapshot.forEach(doc => {
-        tasks.push({ ...doc.data(), id: doc.id, hover: false })
-      });
-      this.tasks = tasks;
-    },
-  },
-  mounted() {
-  }
-});
