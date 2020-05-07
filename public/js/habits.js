@@ -6,7 +6,7 @@ class Habit {
     streak = 0; //int
     percent = 0; //number
     complete = false; //bool
-    timesCompleted = [];
+    timesCompleted = []; //compount of date and boolean
 
     constructor(name, streak, timesCompleted) {
         this.name = name;
@@ -24,6 +24,7 @@ let vueHabits = new Vue({
     el: '#habits',
     //start with an empty list of tasks
     data: {
+        newHabitName: "",
         habits: [],
     },
     methods: {
@@ -37,6 +38,7 @@ let vueHabits = new Vue({
                 habit.streak++;
             }
             else {
+
                 habit.timesCompleted.pop();
                 habit.streak--;
             }
@@ -56,7 +58,36 @@ let vueHabits = new Vue({
             else {
                 habit.percent = 0;
             }
+            completeHabit = firebase.functions().httpsCallable('completeHabit');
+            completeHabit(habit);
 
-        }
+        },
+        handleFormSubmit: async function () {
+            this.habits.push({
+                name: this.newHabitName, //string
+                streak: 0, //int
+                percent: 0, //number
+                complete: false, //bool
+                timesCompleted: [], //compount of date and boolean
+            })
+            addHabit = firebase.functions().httpsCallable('addHabit');
+            addHabit({ name: this.newHabitName });
+            console.log("submitted:", this.newHabitName);
+            this.newHabitName = "";
+        },
+        
+        updateHabits: function (snapshot) {
+            let habits = [];
+            snapshot.forEach(doc => {
+              habits.push({ ...doc.data(), id: doc.id, hover: false })
+            });
+            this.habits = habits;
+          },
+
+          resetHabits: function (snapshot) {
+              snapshot.forEach(doc => {
+                  console.log(doc.data());
+              })
+          }
     }
-});
+})
