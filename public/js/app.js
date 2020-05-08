@@ -32,7 +32,7 @@ function getCharacterValues(snap) {
   }
   //if there was a level up, send it to the database
   if (data.xp >= data.nextLvlXp) {
-    
+
     //Yaaay alert the user they have advanced a level
     alert(`Congratulations! You are now level ${level}`)
     const updateUserData = firebase.functions().httpsCallable('updateUserData');
@@ -82,6 +82,7 @@ function getXPMult(snap) {
     streak++;
   }
 
+
   //update last time award given. If this is less than 24 hours it effectively changes nothing
   lastXpAward = today;
   xpMult = 1 + (streak / 10);
@@ -93,12 +94,14 @@ function getXPMult(snap) {
 
 
   //send new data back to database
-  const updateMultData = firebase.functions().httpsCallable('updateMultData');
-  updateMultData({
-    lastXpAward: today.getTime(),
-    streak: streak,
-    xpMult: xpMult,
-  })
+  if (difference_In_Days >= 1) {
+    const updateMultData = firebase.functions().httpsCallable('updateMultData');
+    updateMultData({
+      lastXpAward: today.getTime(),
+      streak: streak,
+      xpMult: xpMult,
+    })
+  }
 }
 
 let userProfile;
@@ -109,7 +112,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
   //if the user is logged in, grab all their data and display in in the elements on the screen
   //to make this function more efficient I really should be caching data locally in the browser. Seeing as I don't know how to do that and didn't have the time to learn, I did not do that.
- 
+
   //loaded ensures that we don't get caught in any infinite loops!
   if (user && !loaded) {
 
@@ -122,9 +125,12 @@ firebase.auth().onAuthStateChanged(async (user) => {
     const firebaseHabits = firebase.firestore().collection('users').doc(user.uid).collection('habits').onSnapshot(snap => {
 
       vueHabits.updateHabits(snap);
-      vueHabits.resetHabits(snap);
     });
-
+    const habits = firebase.firestore().collection('users').doc(user.uid).collection('habits').get()
+    .then(doc => {
+     
+      vueHabits.resetHabits(doc, user.uid);
+    });
     const userDoc = firebase.firestore().collection('users').doc(user.uid).onSnapshot(snap => {
       //shows xp, level, streaks, etc. 
       //updated every time there is a change in the database
