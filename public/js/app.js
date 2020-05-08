@@ -82,6 +82,7 @@ function getXPMult(snap) {
     streak++;
   }
 
+
   //update last time award given. If this is less than 24 hours it effectively changes nothing
   lastXpAward = today;
   xpMult = 1 + (streak / 10);
@@ -93,12 +94,14 @@ function getXPMult(snap) {
 
 
   //send new data back to database
-  const updateMultData = firebase.functions().httpsCallable('updateMultData');
-  updateMultData({
-    lastXpAward: today.getTime(),
-    streak: streak,
-    xpMult: xpMult,
-  })
+  if (difference_In_Days >= 1) {
+    const updateMultData = firebase.functions().httpsCallable('updateMultData');
+    updateMultData({
+      lastXpAward: today.getTime(),
+      streak: streak,
+      xpMult: xpMult,
+    })
+  }
 }
 
 let userProfile;
@@ -114,11 +117,20 @@ firebase.auth().onAuthStateChanged(async (user) => {
   if (user && !loaded) {
 
     //.onsnapshot() will be called every time there is a change to our database. This allows us to keep the data displayed on the webpage in (nearly) real-time snyc with our database
-    const ref = firebase.firestore().collection('users').doc(user.uid).collection('tasks').onSnapshot(snap => {
+    const firebaseTodos = firebase.firestore().collection('users').doc(user.uid).collection('tasks').onSnapshot(snap => {
       //everytime there is a change in our task list, display the new data
-      app.updateTasks(snap);
+      vueTodo.updateTasks(snap);
     });
 
+    const firebaseHabits = firebase.firestore().collection('users').doc(user.uid).collection('habits').onSnapshot(snap => {
+
+      vueHabits.updateHabits(snap);
+    });
+    const habits = firebase.firestore().collection('users').doc(user.uid).collection('habits').get()
+    .then(doc => {
+     
+      vueHabits.resetHabits(doc, user.uid);
+    });
     const userDoc = firebase.firestore().collection('users').doc(user.uid).onSnapshot(snap => {
       //shows xp, level, streaks, etc. 
       //updated every time there is a change in the database
@@ -135,6 +147,10 @@ firebase.auth().onAuthStateChanged(async (user) => {
       getFirestoreRTData(snap)
     })
 
+    let listOfHabits = []
+    listOfHabits.push(new Habit("Wake Up"));
+    listOfHabits.push(new Habit("Journal", 3, [{ complete: false, date: new Date() }, { complete: false, date: new Date() }]));
+    vueHabits.habits = listOfHabits;
     //set loaded to true so we don't keep doing this over and over!
     loaded = true;
   }
@@ -151,6 +167,7 @@ function getFirestoreRTData(snap) {
 
 
 //This section is the Vue instance which controls the todo section of our content. 
+<<<<<<< HEAD
 let app = new Vue({
   el: '#todo',
   //start with an empty list of tasks
@@ -221,3 +238,5 @@ let app = new Vue({
   mounted() {
   }
 });
+=======
+>>>>>>> habits

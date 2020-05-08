@@ -21,10 +21,11 @@ function setup() {
     clear();
     smooth();
     noLoop();
+
 }
 function renderHUD() {
 
-   
+
 
     background(255);
     clear();
@@ -121,8 +122,6 @@ function renderHUD() {
     text("Streak", width / 2 - 55, 38);
     text("Bonus", width / 2 + 55, 38);
 
-
-    //display the current and max xp levels 
     if (nextLvlXp_hud && (xp_hud || xp_hud === 0)) {
         fill(0);
         textSize(15);

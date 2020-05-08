@@ -17,7 +17,7 @@
 
 <body>
 
- 
+
   <div class="notification"></div>
 
   <!-- This section deals with the log in page -->
@@ -56,33 +56,35 @@
     <div id='container'>
       <!-- The processing js library was used to generate the main user graphic and is being rendered from this file -->
       <script src='js/processing.js'></script>
-   </div>
+    </div>
 
 
     <a class="sign-out">sign out</a>
   </div>
 
-  
 
 
- 
 
 
-<!-- The main content of the webpage -->
+
+
+  <!-- The main content of the webpage -->
 
   <!-- First section: Most Important Tasks -->
   <section class="content" id="todo">
     <h1>Most Important Tasks</h1>
     <!-- This section is being rendered with a Vue.js component, which can be found at the bottom of app.js -->
-    <ul class="mit">
+    <ul class="contentList">
       <!-- Looking through the list of tasks in the vue component and rendering them all -->
       <!-- Checking to see when the user's mouse is hovering over each element -->
-      <li class="parent" v-for="(task, index) in tasks" v-bind:key="task.id" @mouseover="setHoverTrue(task)" @mouseOut="setHoverFalse(task)">
+      <li class="parent" v-for="(task, index) in tasks" v-bind:key="task.id" @mouseover="setHoverTrue(task)"
+        @mouseOut="setHoverFalse(task)">
         <span class="text" v-bind:class="{ 'task-complete': task.complete }">{{index + 1}}. {{task.name}}</span>
-        
+
         <div>
           <!-- Show the delete icon only if the user is hovering over that element in the list -->
-          <i v-show="task.hover"@click="handleDelete(task)" class='material-icons delete' style="color: red">delete_forever</i>
+          <i v-show="task.hover" @click="handleDelete(task)" class='material-icons delete'
+            style="color: red">delete_forever</i>
 
           <!-- Changing which checkbox icon is shown depending on if the task has been completed or not.
           Toggle completion of the task if this icon is clicked -->
@@ -100,7 +102,24 @@
     </form>
   </section>
 
-<!-- Second Section: Displaying the chart with data from rescuetime
+  <section class='content' id='habits'>
+    <h1>Habits</h1>
+    <ul class='contentList'>
+      <li v-for="(habit) in habits">
+        <span class="text">{{habit.name}}</span>
+        <span class="text">{{habit.percent}}%</span>
+        <span class="text">{{habit.streak}}</span>
+        <i v-if="habit.complete" @click="toggleComplete(habit)" class="material-icons checked">check_box</i>
+        <i v-else @click="toggleComplete(habit)" class="material-icons unchecked">check_box_outline_blank</i>
+      </li>
+    </ul>
+    <form autocomplete="off" @submit.prevent="handleFormSubmit()" id="habitForm">
+      <input type='text' id="habitName" v-model="newHabitName">
+      <input type='submit' value='Add Habit'>
+    </form>
+  </section>
+
+  <!-- Second Section: Displaying the chart with data from rescuetime
 This is being rendered in rescueTimeDisplay.js  -->
   <section class="content" id="rescueTime">
     <h1>Rescue Time</h1>
@@ -130,9 +149,10 @@ This is being rendered in rescueTimeDisplay.js  -->
   <!-- Initialize Firebase -->
   <script src="/__/firebase/init.js"></script>
 
+  <script src="js/habits.js"></script>
+  <script src="js/todo.js"></script>
   <script src="js/app.js"></script>
   <script src="js/auth.js"></script>
-  <!-- <script src="js/rescueTimeData.js"></script> -->
   <script src="js/rescueTimeDisplay.js"></script>
 
 </body>

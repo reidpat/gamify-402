@@ -6,6 +6,9 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 const fetch = require('node-fetch');
 
+
+
+
 // auth trigger (new user signup)
 //This function need revision before the app can accept new users
 exports.newUserSignup = functions.auth.user().onCreate((user) => {
@@ -24,6 +27,8 @@ exports.userDeleted = functions.auth.user().onDelete((user) => {
     return doc.delete();
 });
 
+
+
 //For when the frontend needs to add xp to the user
 exports.addXP = functions.https.onCall(async (data, context) => {
 
@@ -41,10 +46,10 @@ async function addXP(context, amount) {
         .then((userData) => {
             //multiplying the amount of xp by the user's current xp multiplier
             amount *= userData.data().xpMult;
-            
+
             //because there can be negative xp added, don't go below zero! 
             if (userData.data().xp + amount >= 0) {
-                
+
                 //updating the xp value
                 return user.update({
                     //xp is rounded to the nearest 100th
@@ -82,6 +87,54 @@ exports.updateUserData = functions.https.onCall(async (data, context) => {
     })
 })
 
+exports.addHabit = functions.https.onCall((data, context) => {
+
+    let addHabit = admin.firestore().collection('users').doc(context.auth.uid).collection('habits').add({
+        name: data.name, //string
+        streak: 0, //int
+        percent: 0, //number
+        complete: false, //bool
+        timesCompleted: [], //compount of date and boolean
+    })
+    return null;
+})
+exports.completeHabit = functions.https.onCall((data, context) => {
+
+    //Awards xp for completion and takes away if marked incomplete.
+    if (data.complete) {
+        addXP(context, data.streak);
+    }
+    else {
+        addXP(context, -(data.streak + 1));
+    }
+
+    //log data in database
+    return admin.firestore().collection('users').doc(context.auth.uid).collection('habits').doc(data.id).update({
+        complete: data.complete,
+        streak: data.streak,
+        percent: data.percent,
+        timesCompleted: data.timesCompleted,
+    })
+
+})
+
+exports.resetHabits = functions.https.onCall((data, context) => {
+    return admin.firestore().collection('users').doc(context.auth.uid).collection('habits').doc(data.id).update({
+        complete: data.complete,
+        streak: data.streak,
+        percent: data.percent,
+        timesCompleted: data.timesCompleted,
+    })
+});
+
+exports.newDay = functions.https.onCall((data, context) => {
+
+    let newDate = admin.firestore().collection('users').doc(context.auth.uid).update({
+        newDay:  admin.firestore.Timestamp.fromDate(new Date()),
+    })
+
+    return null;
+});
 //adding a task to the user's task list. 
 exports.addTask = functions.https.onCall((data, context) => {
     //console.log("adding task", data.newTaskName);
@@ -132,7 +185,7 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
             .then(json => resolveData(json));
 
     }
-    
+
     //formatting today's date in a way that can be read by the RT API
     function getTodayDate() {
 
@@ -156,14 +209,14 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
         let rtKey;
         const userRef = admin.firestore().collection('users').doc(context.auth.uid)
         const getRef = await userRef.get()
-        .then(ref =>{
-           return ref.data()
-        })
-        .then(data => {
-            
-            rtKey = data.rtKey;
-            return data.rtKey;
-        });
+            .then(ref => {
+                return ref.data()
+            })
+            .then(data => {
+
+                rtKey = data.rtKey;
+                return data.rtKey;
+            });
         return rtKey;
     }
 
@@ -199,7 +252,7 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
             //add current log object to our list of rtData
             rtData.push(log);
         });
-        
+
         //now take all that data and actually add it to the database!
         return addData(rtData);
     }
@@ -241,7 +294,7 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
             })
             .then(latestEntry => {
                 //latestEntry refers to dataArray[0] from above.
-
+                
                 //firestore keeps things in it's own format called Timestamp. We want to convert it back to a useable date.
                 let latestEntryDate = latestEntry.date.toDate();
                 let dataArray = [];
@@ -251,10 +304,10 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
                 //data here refers to the new rescuetime data that we went and fetched earlier
                 //here we are looking for any data which doesn't already exist in our database.
                 data.forEach(data => {
-                    
+
                     //only care about the new rescuetime data if more than 5m of activity have been logged. Discard it otherwise.
                     if (data.time > 5) {
-                        
+
                         //Pro tip: Working with dates and timezones on the internet sucks. 0/10 do not reccommend doing
 
                         //this section here is done so we can compare the latest entry on our server to the data coming in and only add new data
@@ -263,7 +316,7 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
                         //get the new rescuetime date
                         let targetTime = new Date(data.date);
 
-                         //time zone value from database
+                        //time zone value from database
                         let timeZoneFromDB = -7.00;
 
                         //get the timezone offset from local time in minutes
@@ -272,11 +325,11 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
                         //convert the offset to milliseconds, add to targetTime, and make a new Date
                         //now we are working with both the rescuetime data and the server data in the same time zone and format
                         let offsetTime = new Date(targetTime.getTime() - (tzDifference * 60 * 1000));
-                        
+
 
                         //in the very first rescuetime data point we look at, check if more than an hour has passed since the latest entry in our database
                         if (blank && offsetTime.getTime() - latestEntryDate.getTime() > 3610000) {
-                            
+
                             //if yes, add a new entry to our database with a timestamp just after our latest database entry, but give it no data to display
                             //this allows chart.js to make a gap in the line graph every time there is a missing hourly time stamp. Otherwise it will draw a continuous line.
                             rescueTime.add({
