@@ -123,7 +123,7 @@ function renderHUD() {
 
 
     //display the current and max xp levels 
-    if (nextLvlXp_hud && xp_hud) {
+    if (nextLvlXp_hud && (xp_hud || xp_hud === 0)) {
         fill(0);
         textSize(15);
         text(`${xp_hud}/${nextLvlXp_hud}`, width / 2, 55);
