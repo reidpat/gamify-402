@@ -117,6 +117,24 @@ exports.completeHabit = functions.https.onCall((data, context) => {
     })
 
 })
+
+exports.resetHabits = functions.https.onCall((data, context) => {
+    return admin.firestore().collection('users').doc(context.auth.uid).collection('habits').doc(data.id).update({
+        complete: data.complete,
+        streak: data.streak,
+        percent: data.percent,
+        timesCompleted: data.timesCompleted,
+    })
+});
+
+exports.newDay = functions.https.onCall((data, context) => {
+
+    let newDate = admin.firestore().collection('users').doc(context.auth.uid).update({
+        newDay:  admin.firestore.Timestamp.fromDate(new Date()),
+    })
+
+    return null;
+});
 //adding a task to the user's task list. 
 exports.addTask = functions.https.onCall((data, context) => {
     //console.log("adding task", data.newTaskName);
