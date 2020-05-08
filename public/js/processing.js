@@ -107,7 +107,7 @@ function renderHUD() {
     text("Streak", width / 2 - 55, 38);
     text("Bonus", width / 2 + 55, 38);
 
-    if (nextLvlXp_hud && xp_hud) {
+    if (nextLvlXp_hud && (xp_hud || xp_hud === 0)) {
         fill(0);
         textSize(15);
         text(`${xp_hud}/${nextLvlXp_hud}`, width / 2, 55);
