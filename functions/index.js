@@ -276,7 +276,7 @@ exports.updateRTData = functions.https.onCall(async (data, context) => {
             })
             .then(latestEntry => {
                 //latestEntry refers to dataArray[0] from above.
-
+                
                 //firestore keeps things in it's own format called Timestamp. We want to convert it back to a useable date.
                 let latestEntryDate = latestEntry.date.toDate();
                 let dataArray = [];
