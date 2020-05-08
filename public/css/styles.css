@@ -107,7 +107,7 @@ header a:hover {
     padding: 20px;
     padding-top: 5px;
     margin-top: 20px;
-    margin-left: 230px;
+    margin-left: 250px;
     background-color: white;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -247,5 +247,6 @@ button {
 }
 #container {
     margin-bottom: 0px;
+    margin-left: 5px;
     height: 200px;
 }
