@@ -81,7 +81,7 @@
         @mouseOut="setHoverFalse(task)">
         <span class="text" v-bind:class="{ 'task-complete': task.complete }">{{index + 1}}. {{task.name}}</span>
 
-        <div>
+        <div v-if="task.loaded">
           <!-- Show the delete icon only if the user is hovering over that element in the list -->
           <i v-show="task.hover" @click="handleDelete(task)" class='material-icons delete'
             style="color: red">delete_forever</i>
@@ -109,8 +109,10 @@
         <span class="text">{{habit.name}}</span>
         <span class="text">{{habit.percent}}%</span>
         <span class="text">{{habit.streak}}</span>
-        <i v-if="habit.complete" @click="toggleComplete(habit)" class="material-icons checked">check_box</i>
-        <i v-else @click="toggleComplete(habit)" class="material-icons unchecked">check_box_outline_blank</i>
+        <span v-if="habit.loaded">
+          <i v-if="habit.complete" @click="toggleComplete(habit)" class="material-icons checked">check_box</i>
+          <i v-else @click="toggleComplete(habit)" class="material-icons unchecked">check_box_outline_blank</i>
+        </span>
       </li>
     </ul>
     <form autocomplete="off" @submit.prevent="handleFormSubmit()" id="habitForm">

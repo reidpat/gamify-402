@@ -33,7 +33,7 @@ let vueHabits = new Vue({
             if (habit.complete) {
                 habit.timesCompleted.push({
                     date: firebase.firestore.Timestamp.fromDate(new Date()),
-                    complete: true
+                    complete: true,
                 });
                 habit.streak++;
             }
@@ -69,6 +69,7 @@ let vueHabits = new Vue({
                 streak: 0, //int
                 percent: 0, //number
                 complete: false, //bool
+                loaded: false,
                 timesCompleted: [], //compount of date and boolean
             })
             addHabit = firebase.functions().httpsCallable('addHabit');
@@ -80,7 +81,7 @@ let vueHabits = new Vue({
         updateHabits: function (snapshot) {
             let habits = [];
             snapshot.forEach(doc => {
-                habits.push({ ...doc.data(), id: doc.id, hover: false })
+                habits.push({ ...doc.data(), id: doc.id, hover: false, loaded: true })
             });
             this.habits = habits;
         },
