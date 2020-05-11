@@ -72,34 +72,156 @@
 
   <!-- First section: Most Important Tasks -->
   <section class="content" id="todo">
-    <h1>Most Important Tasks</h1>
+    <h1>Todo</h1>
     <!-- This section is being rendered with a Vue.js component, which can be found at the bottom of app.js -->
     <ul class="contentList">
       <!-- Looking through the list of tasks in the vue component and rendering them all -->
       <!-- Checking to see when the user's mouse is hovering over each element -->
-      <li class="parent" v-for="(task, index) in tasks" v-bind:key="task.id" @mouseover="setHoverTrue(task)"
+      <div id="mit">
+        <h3>MOST IMPORTANT TASK</h3>
+        <p class="subtext">If this was the only task completed today you would be satisfied</p>
+        <div v-if="tasks[0]">
+          <li class="parent" v-bind:key="tasks[0].id" @mouseover="setHoverTrue(tasks[0])"
+            @mouseOut="setHoverFalse(tasks[0])">
+            <span class="text" v-bind:class="{ 'task-complete': tasks[0].complete }">1. {{tasks[0].name}}</span>
+            <div v-if="tasks[0].loaded">
+
+              <i v-show="tasks[0].hover" @click="handleDelete(tasks[0])" class='material-icons delete'
+                style="color: red">delete_forever</i>
+
+              <i v-if="tasks[0].complete" @click="toggleComplete(tasks[0])" class="material-icons checked">check_box</i>
+              <i v-else @click="toggleComplete(tasks[0])" class="material-icons unchecked">check_box_outline_blank</i>
+            </div>
+          </li>
+        </div>
+        <div v-else>
+          <form autocomplete="off" @submit.prevent="handleFormSubmit(0, $event)" class="taskForm" v-if="tasks.length < 5">
+            <input type='text' class="taskName" placeholder="1. Task Name">
+            <input type='submit' class="taskButton" value='Add Task'>
+          </form>
+        </div>
+      </div>
+
+          <hr class="divider">
+
+      <!-- Task 2 -->
+      <div id="secondary">
+        <h3>TASKS OF SECONDARY IMPORTANCE</h3>
+        <p class="subtext">Doing these would make your day even better</p>
+        <div v-if="tasks[1]">
+          <li class="parent" v-bind:key="tasks[1].id" @mouseover="setHoverTrue(tasks[1])"
+            @mouseOut="setHoverFalse(tasks[1])">
+            <span class="text" v-bind:class="{ 'task-complete': tasks[1].complete }">2. {{tasks[1].name}}</span>
+            <div v-if="tasks[1].loaded">
+
+              <i v-show="tasks[1].hover" @click="handleDelete(tasks[1])" class='material-icons delete'
+                style="color: red">delete_forever</i>
+
+              <i v-if="tasks[1].complete" @click="toggleComplete(tasks[1])" class="material-icons checked">check_box</i>
+              <i v-else @click="toggleComplete(tasks[1])" class="material-icons unchecked">check_box_outline_blank</i>
+            </div>
+          </li>
+        </div>
+        <div v-else>
+          <form autocomplete="off" @submit.prevent="handleFormSubmit(1, $event)" class="taskForm" v-if="tasks.length < 5">
+            <input type='text' class="taskName" placeholder="2. Task Name">
+            <input type='submit' class="taskButton" value='Add Task'>
+          </form>
+        </div>
+
+        <!-- Task 3 -->
+        <div v-if="tasks[2]">
+          <li class="parent" v-bind:key="tasks[2].id" @mouseover="setHoverTrue(tasks[2])"
+            @mouseOut="setHoverFalse(tasks[2])">
+            <span class="text" v-bind:class="{ 'task-complete': tasks[2].complete }">3. {{tasks[2].name}}</span>
+            <div v-if="tasks[2].loaded">
+
+              <i v-show="tasks[2].hover" @click="handleDelete(tasks[2])" class='material-icons delete'
+                style="color: red">delete_forever</i>
+
+              <i v-if="tasks[2].complete" @click="toggleComplete(tasks[2])" class="material-icons checked">check_box</i>
+              <i v-else @click="toggleComplete(tasks[2])" class="material-icons unchecked">check_box_outline_blank</i>
+            </div>
+          </li>
+        </div>
+        <div v-else>
+          <form autocomplete="off" @submit.prevent="handleFormSubmit(2, $event)" class="taskForm" v-if="tasks.length < 5">
+            <input type='text' class="taskName" placeholder="3. Task Name">
+            <input type='submit' class="taskButton" value='Add Task'>
+          </form>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div id="additional">
+        <h3>ADDITIONAL TASKS</h3>
+        <p class = "subtext">Do these only after the above tasks are complete</p>
+        <div v-if="tasks[3]">
+          <li class="parent" v-bind:key="tasks[3].id" @mouseover="setHoverTrue(tasks[3])"
+            @mouseOut="setHoverFalse(tasks[3])">
+            <span class="text" v-bind:class="{ 'task-complete': tasks[3].complete }">4. {{tasks[3].name}}</span>
+            <div v-if="tasks[3].loaded">
+
+              <i v-show="tasks[3].hover" @click="handleDelete(tasks[3])" class='material-icons delete'
+                style="color: red">delete_forever</i>
+
+              <i v-if="tasks[3].complete" @click="toggleComplete(tasks[3])" class="material-icons checked">check_box</i>
+              <i v-else @click="toggleComplete(tasks[3])" class="material-icons unchecked">check_box_outline_blank</i>
+            </div>
+          </li>
+        </div>
+        <div v-else>
+          <form autocomplete="off" @submit.prevent="handleFormSubmit(3, $event)" class="taskForm" v-if="tasks.length < 5">
+            <input type='text' class="taskName" placeholder="4. Task Name">
+            <input type='submit' class="taskButton" value='Add Task'>
+          </form>
+        </div>
+      </div>
+
+      <div v-if="tasks[4]">
+        <li class="parent" v-bind:key="tasks[4].id" @mouseover="setHoverTrue(tasks[4])"
+          @mouseOut="setHoverFalse(tasks[4])">
+          <span class="text" v-bind:class="{ 'task-complete': tasks[4].complete }">5. {{tasks[4].name}}</span>
+          <div v-if="tasks[4].loaded">
+
+            <i v-show="tasks[4].hover" @click="handleDelete(tasks[4])" class='material-icons delete'
+              style="color: red">delete_forever</i>
+
+            <i v-if="tasks[4].complete" @click="toggleComplete(tasks[4])" class="material-icons checked">check_box</i>
+            <i v-else @click="toggleComplete(tasks[4])" class="material-icons unchecked">check_box_outline_blank</i>
+          </div>
+        </li>
+      </div>
+      <div v-else>
+        <form autocomplete="off" @submit.prevent="handleFormSubmit(4, $event)" class="taskForm" v-if="tasks.length < 5">
+          <input type='text' class="taskName" placeholder="5. Task Name">
+          <input type='submit' class="taskButton" value='Add Task'>
+        </form>
+      </div>
+    </div>
+      </div>
+      <!-- <li class="parent" v-for="(task, index) in tasks" v-bind:key="task.id" @mouseover="setHoverTrue(task)"
         @mouseOut="setHoverFalse(task)">
         <span class="text" v-bind:class="{ 'task-complete': task.complete }">{{index + 1}}. {{task.name}}</span>
 
         <div v-if="task.loaded">
-          <!-- Show the delete icon only if the user is hovering over that element in the list -->
+
           <i v-show="task.hover" @click="handleDelete(task)" class='material-icons delete'
             style="color: red">delete_forever</i>
-
-          <!-- Changing which checkbox icon is shown depending on if the task has been completed or not.
-          Toggle completion of the task if this icon is clicked -->
+>
           <i v-if="task.complete" @click="toggleComplete(task)" class="material-icons checked">check_box</i>
           <i v-else @click="toggleComplete(task)" class="material-icons unchecked">check_box_outline_blank</i>
         </div>
-      </li>
+      </li> -->
     </ul>
 
     <!-- Where the user adds new  -->
     <!-- Only allow the user to add more tasks if there are currently less than 3 in the list -->
-    <form autocomplete="off" @submit.prevent="handleFormSubmit" id="taskForm" v-if="tasks.length < 3">
+    <!-- <form autocomplete="off" @submit.prevent="handleFormSubmit" id="taskForm" v-if="tasks.length < 5">
       <input type='text' id="taskName" v-model="newTaskName" placeholder="Task Name">
       <input type='submit' value='Add Task'>
-    </form>
+    </form> -->
   </section>
 
   <section class='content' id='habits'>
