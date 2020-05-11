@@ -1,3 +1,5 @@
+
+
 let vueTodo = new Vue({
   el: '#todo',
   //start with an empty list of tasks
@@ -6,6 +8,7 @@ let vueTodo = new Vue({
     userID: "",
     tasks: [],
   },
+
   methods: {
     //this will update our
     toggleComplete: function (task) {
@@ -14,25 +17,30 @@ let vueTodo = new Vue({
       compTask(task);
     },
     //gets triggered when the user enters a new task
-    handleFormSubmit: async function () {
+    handleFormSubmit: async function (index, event) {
       //if we add a new task and we have less than 3 in our list, send that new one to our database
-      if (this.tasks.length < 3) {
-        this.tasks.push({
-          complete: false,
-          loaded: false,
-          name: this.newTaskName
-        });
-        addTask = firebase.functions().httpsCallable('addTask');
-        addTask({ newTaskName: this.newTaskName });
+      if (event.target[0].value.length > 0) {
+        if (this.tasks.length < 5) {
+          this.tasks[index] = {
+            complete: false,
+            loaded: false,
+            name: event.target[0].value,
+            index: index,
+          };
+          addTask = firebase.functions().httpsCallable('addTask');
+          addTask({
+            newTaskName: event.target[0].value,
+            index: index,
+          });
 
-        this.newTaskName = "";
+        }
       }
     },
     handleDelete: function (task) {
       this.tasks.pop(task);
       removeTask = firebase.functions().httpsCallable('removeTask');
       removeTask(task);
-      
+
     },
     setHoverTrue: function (task) {
       task.hover = true;
@@ -47,7 +55,8 @@ let vueTodo = new Vue({
     updateTasks: function (snapshot) {
       let tasks = [];
       snapshot.forEach(doc => {
-        tasks.push({ ...doc.data(), id: doc.id, hover: false, loaded: true })
+        let index = doc.data().index;
+        tasks[index] = { ...doc.data(), id: doc.id, hover: false, loaded: true };
       });
       this.tasks = tasks;
     },
