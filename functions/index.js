@@ -141,7 +141,8 @@ exports.addTask = functions.https.onCall((data, context) => {
     let addTask = admin.firestore().collection('users').doc(context.auth.uid).collection('tasks').add({
         complete: false,
         dateAdded: admin.firestore.Timestamp.fromDate(new Date()),
-        name: data.newTaskName
+        name: data.newTaskName,
+        index: data.index,
     })
 
     return null;
