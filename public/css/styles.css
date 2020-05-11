@@ -76,6 +76,7 @@ ul {
 /* When you mouse over the navigation links, change their color */
 
 
+
 header {
     width: 100%;
     padding-top: 40px;
@@ -104,6 +105,7 @@ header a:hover {
 
 .content {
     max-width: 800px;
+    min-width: 720px;
     padding: 20px;
     padding-top: 5px;
     margin-top: 20px;
@@ -117,7 +119,10 @@ header a:hover {
 .content.show{
     display: block;
 }
-
+.contentList {
+    padding: 20px;
+    padding-top: 10px;
+}
 .contentList li {
     padding: 20px;
     margin: 10px auto;
@@ -180,12 +185,46 @@ header a:hover {
 
 /*form element styles */
 
-input {
-    display: block;
+.taskName {
+    width: 80%;
+    max-width: 200;
+    padding: 12px 20px;
     margin: 8px 0;
-    padding: 8px 2px;
-    border-width: 0 0 2px 0;
-    width: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+.taskName:focus {
+    border-radius: 5px;
+    border: 1px solid #06a4c3;
+    background-color: lightblue;
+    color: black;
+}
+  .taskButton {
+      border-radius: 5px;
+      padding: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      float: right;
+  }
+
+.divider {
+    height: 1px;
+    background-color: black;
+    color: black;
+    border-color: black;
+    border-radius: 20px;
+    margin-top: 25px;
+}
+
+.subtext {
+    font-size: small;
+    padding-top: 0px; 
+    margin-top: 0px;  
+    margin-bottom: 25px; 
+}
+
+.contentList h3 {
+    margin-bottom: 5px;
 }
 
 button {
