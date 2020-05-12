@@ -223,8 +223,9 @@ header a:hover {
     margin-bottom: 25px; 
 }
 
-.contentList h3 {
+.contentList h3, p {
     margin-bottom: 5px;
+    padding-left: 20px;
 }
 
 button {
