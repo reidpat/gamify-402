@@ -37,7 +37,7 @@ let vueTodo = new Vue({
       }
     },
     handleDelete: function (task) {
-      this.tasks.pop(task);
+      this.tasks[task.index] = null;
       removeTask = firebase.functions().httpsCallable('removeTask');
       removeTask(task);
 
